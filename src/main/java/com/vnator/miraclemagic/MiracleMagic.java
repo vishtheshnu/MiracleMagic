@@ -1,5 +1,6 @@
 package com.vnator.miraclemagic;
 
+import com.vnator.miraclemagic.attachment.ModDataAttachments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -84,6 +85,8 @@ public class MiracleMagic {
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        ModDataAttachments.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Miraclemagic) to respond directly to events.
