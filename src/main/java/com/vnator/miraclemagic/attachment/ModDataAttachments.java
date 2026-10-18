@@ -23,7 +23,7 @@ public class ModDataAttachments {
                     .copyOnDeath()
                     .build());
 
-    public static void register(IEventBus bus) {
-        ATTACHMENT_TYPES.register(bus);
+    public static void register(IEventBus eventBus) {
+        ATTACHMENT_TYPES.register(eventBus);
     }
 }
