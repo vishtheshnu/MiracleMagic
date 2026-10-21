@@ -9,6 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+/**
+ * Base representation of an Element (aka Aspect)
+ * TODO remove name field, the file name/ResourceLocation is the name.
+ * TODO add fields for icon, and the 2 Elements used to create this one
+ */
 public record Element(String name) {
 
     public static final ResourceKey<Registry<Element>> REGISTRY_KEY = ResourceKey
