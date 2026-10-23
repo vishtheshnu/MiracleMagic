@@ -22,6 +22,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.miraclemagic.mod_tab"))
                     .displayItems(((itemDisplayParameters, output) -> {
                         output.accept(ModBlocks.EXAMPLE_BLOCK.asItem());
+                        output.accept(ModBlocks.CRUCIBLE.asItem());
                     })).build());
 
     public static void register(IEventBus eventBus) {

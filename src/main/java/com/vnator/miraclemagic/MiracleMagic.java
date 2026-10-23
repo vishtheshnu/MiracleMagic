@@ -2,6 +2,7 @@ package com.vnator.miraclemagic;
 
 import com.vnator.miraclemagic.attachment.ModDataAttachments;
 import com.vnator.miraclemagic.block.ModBlocks;
+import com.vnator.miraclemagic.block.entity.ModBlockEntities;
 import com.vnator.miraclemagic.item.ModCreativeModeTabs;
 import com.vnator.miraclemagic.item.ModItems;
 
@@ -27,6 +28,7 @@ public class MiracleMagic {
         ModItems.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModDataAttachments.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
