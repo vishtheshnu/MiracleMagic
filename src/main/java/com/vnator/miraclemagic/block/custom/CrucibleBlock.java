@@ -52,7 +52,13 @@ public class CrucibleBlock extends BaseEntityBlock {
         if (entity instanceof ItemEntity itemEntity) {
             // Call BlockEntity method to process
             if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucibleBlockEntity) {
-                ItemStack output = crucibleBlockEntity.acceptInput(itemEntity.getItem());
+                ItemStack output;
+                if (itemEntity.getOwner() instanceof Player playerOwner) {
+                    output = crucibleBlockEntity.acceptInput(itemEntity.getItem(), playerOwner);
+                } else {
+                    output = crucibleBlockEntity.acceptInput(itemEntity.getItem(), null);
+                }
+
                 itemEntity.setItem(output);
                 level.updateNeighbourForOutputSignal(pos, this);
             }
@@ -68,6 +74,10 @@ public class CrucibleBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
                                                BlockHitResult hitResult) {
+        if (level.isClientSide()) {
+            return InteractionResult.PASS;
+        }
+
         if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucibleBlockEntity) {
             Essentia essentia = crucibleBlockEntity.getEssentia();
             player.displayClientMessage(Component.literal(essentia.toString()), false);

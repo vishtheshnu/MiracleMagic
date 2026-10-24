@@ -5,6 +5,7 @@ import com.vnator.miraclemagic.block.ModBlocks;
 import com.vnator.miraclemagic.block.entity.ModBlockEntities;
 import com.vnator.miraclemagic.item.ModCreativeModeTabs;
 import com.vnator.miraclemagic.item.ModItems;
+import com.vnator.miraclemagic.recipe.ModRecipes;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -26,9 +27,12 @@ public class MiracleMagic {
     public MiracleMagic(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
+
         ModCreativeModeTabs.register(modEventBus);
         ModDataAttachments.register(modEventBus);
+
         ModBlockEntities.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

@@ -20,7 +20,7 @@ public class ModRegistries {
 
     @SubscribeEvent
     public static void registryEvent(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(Element.REGISTRY_KEY, Element.CODEC);
+        event.dataPackRegistry(Element.REGISTRY_KEY, Element.CODEC, Element.CODEC);
     }
 
     @SubscribeEvent
