@@ -56,11 +56,13 @@ public class CrucibleBlockEntity extends BlockEntity {
             if (optionalRecipe.isPresent()) {
                 CrucibleRecipe recipe = optionalRecipe.get().value();
 
-                storedEssentia.subtract(recipe.essentia());
-                input.setCount(input.getCount() - 1);
-                player.addItem(recipe.output().copy());
-
-                return input;
+                boolean hasSubstance = storedEssentia.subtract(recipe.essentia());
+                if (hasSubstance) {
+                    input.setCount(input.getCount() - 1);
+                    player.addItem(recipe.output().copy());
+                    return input;
+                }
+                // Turn ingredient into points if not enough to craft
             }
         }
 

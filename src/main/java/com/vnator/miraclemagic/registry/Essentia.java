@@ -34,6 +34,10 @@ public record Essentia(Map<Holder<Element>, Integer> points) {
             .unboundedMap(RegistryFileCodec.create(Element.REGISTRY_KEY, Element.CODEC), Codec.INT)
             .xmap(Essentia::new, Essentia::points);
 
+    public Essentia {
+        points = new HashMap<>(points);
+    }
+
     /**
      * Merges the element:points of {@code other} into this instance
      * 
@@ -58,7 +62,7 @@ public record Essentia(Map<Holder<Element>, Integer> points) {
      */
     public boolean hasGreaterThan(Essentia other) {
         for (Holder<Element> element : other.points.keySet()) {
-            if (points.get(element) < other.points.get(element)) {
+            if (points.getOrDefault(element, 0) < other.points.get(element)) {
                 return false;
             }
         }
