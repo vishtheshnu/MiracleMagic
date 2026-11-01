@@ -1,0 +1,11 @@
+{
+  "values": {
+    "minecraft:sand": {
+      "replace": true,
+      "value": {
+        "miraclemagic:air": 1,
+        "miraclemagic:earth": 2
+      }
+    }
+  }
+}

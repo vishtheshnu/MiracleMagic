@@ -18,7 +18,7 @@ public class ModDataAttachments {
             .create(NeoForgeRegistries.ATTACHMENT_TYPES, MiracleMagic.MODID);
 
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<HashSet<String>>> PLAYER_RESEARCH_STAGES = ATTACHMENT_TYPES
-            .register("player_strings", () -> AttachmentType.builder(() -> new HashSet<String>())
+            .register("player_research", () -> AttachmentType.builder(() -> new HashSet<String>())
                     .serialize(Codec.STRING.listOf().xmap(HashSet::new, data -> data.stream().toList()))
                     .copyOnDeath()
                     .build());

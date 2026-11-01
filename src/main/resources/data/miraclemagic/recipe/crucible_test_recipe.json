@@ -1,0 +1,14 @@
+{
+  "type": "miraclemagic:crucible",
+  "ingredient": {
+    "item": "minecraft:spruce_log"
+  },
+  "essentia": {
+    "miraclemagic:air": 5,
+    "miraclemagic:earth": 10
+  },
+  "research": "test2",
+  "output":{
+    "id": "minecraft:diamond"
+  }
+}
