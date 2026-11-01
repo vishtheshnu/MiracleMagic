@@ -79,8 +79,8 @@ public class CrucibleBlock extends BaseEntityBlock {
         }
 
         if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucibleBlockEntity) {
-            ElementPoints elementPoints = crucibleBlockEntity.getEssentia();
-            player.displayClientMessage(Component.literal(elementPoints.toString()), false);
+            ElementPoints essentia = crucibleBlockEntity.getEssentia();
+            player.displayClientMessage(Component.literal(essentia.toString()), false);
             return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);

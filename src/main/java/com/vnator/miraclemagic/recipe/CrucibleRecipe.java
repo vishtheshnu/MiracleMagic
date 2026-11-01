@@ -19,7 +19,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public record CrucibleRecipe(Ingredient inputItem, ElementPoints inputElementPoints, String research, ItemStack output)
+public record CrucibleRecipe(Ingredient inputItem, ElementPoints inputEssentia, String research, ItemStack output)
         implements Recipe<CrucibleRecipeInput> {
 
     @Override
@@ -32,9 +32,9 @@ public record CrucibleRecipe(Ingredient inputItem, ElementPoints inputElementPoi
             return false;
         }
         // Essentia match
-        ElementPoints crucibleElementPoints = input.elementPoints();
-        for (Holder<Element> element : inputElementPoints.amounts().keySet()) {
-            if (crucibleElementPoints.amounts().get(element) < inputElementPoints.amounts().get(element)) {
+        ElementPoints crucibleElementPoints = input.essentia();
+        for (Holder<Element> element : inputEssentia.amounts().keySet()) {
+            if (crucibleElementPoints.amounts().get(element) < inputEssentia.amounts().get(element)) {
                 return false;
             }
         }
@@ -76,13 +76,13 @@ public record CrucibleRecipe(Ingredient inputItem, ElementPoints inputElementPoi
 
         public static final MapCodec<CrucibleRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CrucibleRecipe::inputItem),
-                ElementPoints.CODEC.fieldOf("essentia").forGetter(CrucibleRecipe::inputElementPoints),
+                ElementPoints.CODEC.fieldOf("essentia").forGetter(CrucibleRecipe::inputEssentia),
                 Codec.STRING.fieldOf("research").forGetter(CrucibleRecipe::research),
                 ItemStack.CODEC.fieldOf("output").forGetter(CrucibleRecipe::output)).apply(inst, CrucibleRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, CrucibleRecipe> STREAM_CODEC = StreamCodec.composite(
                 Ingredient.CONTENTS_STREAM_CODEC, CrucibleRecipe::inputItem,
-                ElementPoints.STREAM_CODEC, CrucibleRecipe::inputElementPoints,
+                ElementPoints.STREAM_CODEC, CrucibleRecipe::inputEssentia,
                 ByteBufCodecs.STRING_UTF8, CrucibleRecipe::research,
                 ItemStack.STREAM_CODEC, CrucibleRecipe::output,
                 CrucibleRecipe::new);

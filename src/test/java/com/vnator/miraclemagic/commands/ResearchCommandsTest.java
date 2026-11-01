@@ -1,6 +1,7 @@
 package com.vnator.miraclemagic.commands;
 
 import com.vnator.miraclemagic.MiracleMagic;
+import com.vnator.miraclemagic.TestUtil;
 import com.vnator.miraclemagic.attachment.ModDataAttachments;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -41,7 +42,7 @@ public class ResearchCommandsTest {
     private void setup(GameTestHelper helper) {
         this.helper = helper;
         // makeMockServerPlayerInLevel() creates actual player, required for commands to work
-        player = helper.makeMockServerPlayerInLevel();
+        player = TestUtil.createPlayer(helper);
         elevatedSource = player.createCommandSourceStack().withPermission(2);
         // Level 1 is the highest level that should still be rejected by add/remove
         lowSource = player.createCommandSourceStack().withPermission(1);
@@ -135,12 +136,6 @@ public class ResearchCommandsTest {
         teardown();
     }
 
-    /**
-     * Targets the player with @s rather than by name: every mock player is named "test-mock-player" and stays in
-     * the server's player list after discard(), so a name lookup can resolve to another test's player. UUIDs
-     * aren't an option either, since EntityArgument.player() rejects them. The command sources are created from
-     * this test's player, so @s always resolves to it.
-     */
     private String addCommand(String research) {
         return "miraclemagic research add " + research + " " + player.getScoreboardName();
     }

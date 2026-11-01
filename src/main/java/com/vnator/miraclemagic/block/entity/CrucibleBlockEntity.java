@@ -30,11 +30,11 @@ import javax.annotation.Nullable;
 
 public class CrucibleBlockEntity extends BlockEntity {
 
-    private ElementPoints storedElementPoints;
+    private ElementPoints storedEssentia;
 
     public CrucibleBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.CRUCIBLE_BE.get(), pos, blockState);
-        storedElementPoints = new ElementPoints(new HashMap<>());
+        storedEssentia = new ElementPoints(new HashMap<>());
     }
 
     /**
@@ -51,12 +51,12 @@ public class CrucibleBlockEntity extends BlockEntity {
             Set<String> playerResearch = player.getData(ModDataAttachments.PLAYER_RESEARCH_STAGES);
             Optional<RecipeHolder<CrucibleRecipe>> optionalRecipe = this.level.getRecipeManager()
                     .getRecipeFor(ModRecipes.CRUCIBLE_RECIPE_TYPE.get(),
-                            new CrucibleRecipeInput(input, storedElementPoints, playerResearch), level);
+                            new CrucibleRecipeInput(input, storedEssentia, playerResearch), level);
             // Perform only one craft per tick this way
             if (optionalRecipe.isPresent()) {
                 CrucibleRecipe recipe = optionalRecipe.get().value();
 
-                boolean hasSubstance = storedElementPoints.subtract(recipe.inputElementPoints());
+                boolean hasSubstance = storedEssentia.subtract(recipe.inputEssentia());
                 if (hasSubstance) {
                     input.setCount(input.getCount() - 1);
                     player.addItem(recipe.output().copy());
@@ -73,20 +73,20 @@ public class CrucibleBlockEntity extends BlockEntity {
         }
 
         // TODO play sound effect, louder/many times if input count > 1
-        storedElementPoints.merge(inputElementPoints, input.getCount());
+        storedEssentia.merge(inputElementPoints, input.getCount());
         setChanged();
         return ItemStack.EMPTY;
     }
 
     public ElementPoints getEssentia() {
-        return storedElementPoints;
+        return storedEssentia;
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         CompoundTag essentiaTag = new CompoundTag();
-        storedElementPoints.amounts().forEach((element, amount) -> {
+        storedEssentia.amounts().forEach((element, amount) -> {
             essentiaTag.putInt(element.getKey().location().toString(), amount);
         });
 
@@ -106,6 +106,6 @@ public class CrucibleBlockEntity extends BlockEntity {
             essentiaMap.put(elementHolder, essentiaTag.getInt(location));
         });
 
-        storedElementPoints = new ElementPoints(essentiaMap);
+        storedEssentia = new ElementPoints(essentiaMap);
     }
 }
