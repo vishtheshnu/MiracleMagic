@@ -1,7 +1,7 @@
 package com.vnator.miraclemagic.block.custom;
 
 import com.vnator.miraclemagic.block.entity.CrucibleBlockEntity;
-import com.vnator.miraclemagic.registry.Essentia;
+import com.vnator.miraclemagic.registry.ElementPoints;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -79,8 +79,8 @@ public class CrucibleBlock extends BaseEntityBlock {
         }
 
         if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucibleBlockEntity) {
-            Essentia essentia = crucibleBlockEntity.getEssentia();
-            player.displayClientMessage(Component.literal(essentia.toString()), false);
+            ElementPoints elementPoints = crucibleBlockEntity.getEssentia();
+            player.displayClientMessage(Component.literal(elementPoints.toString()), false);
             return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);

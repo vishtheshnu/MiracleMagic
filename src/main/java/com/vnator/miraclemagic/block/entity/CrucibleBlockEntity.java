@@ -5,7 +5,7 @@ import com.vnator.miraclemagic.recipe.CrucibleRecipe;
 import com.vnator.miraclemagic.recipe.CrucibleRecipeInput;
 import com.vnator.miraclemagic.recipe.ModRecipes;
 import com.vnator.miraclemagic.registry.Element;
-import com.vnator.miraclemagic.registry.Essentia;
+import com.vnator.miraclemagic.registry.ElementPoints;
 import com.vnator.miraclemagic.registry.ModRegistries;
 
 import net.minecraft.core.BlockPos;
@@ -30,11 +30,11 @@ import javax.annotation.Nullable;
 
 public class CrucibleBlockEntity extends BlockEntity {
 
-    private Essentia storedEssentia;
+    private ElementPoints storedElementPoints;
 
     public CrucibleBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.CRUCIBLE_BE.get(), pos, blockState);
-        storedEssentia = new Essentia(new HashMap<>());
+        storedElementPoints = new ElementPoints(new HashMap<>());
     }
 
     /**
@@ -51,42 +51,42 @@ public class CrucibleBlockEntity extends BlockEntity {
             Set<String> playerResearch = player.getData(ModDataAttachments.PLAYER_RESEARCH_STAGES);
             Optional<RecipeHolder<CrucibleRecipe>> optionalRecipe = this.level.getRecipeManager()
                     .getRecipeFor(ModRecipes.CRUCIBLE_RECIPE_TYPE.get(),
-                            new CrucibleRecipeInput(input, storedEssentia, playerResearch), level);
+                            new CrucibleRecipeInput(input, storedElementPoints, playerResearch), level);
             // Perform only one craft per tick this way
             if (optionalRecipe.isPresent()) {
                 CrucibleRecipe recipe = optionalRecipe.get().value();
 
-                boolean hasSubstance = storedEssentia.subtract(recipe.essentia());
+                boolean hasSubstance = storedElementPoints.subtract(recipe.inputElementPoints());
                 if (hasSubstance) {
                     input.setCount(input.getCount() - 1);
                     player.addItem(recipe.output().copy());
                     return input;
                 }
-                // Turn ingredient into points if not enough to craft
+                // Turn ingredient into amounts if not enough to craft
             }
         }
 
-        Essentia inputEssentia = BuiltInRegistries.ITEM.wrapAsHolder(input.getItem())
+        ElementPoints inputElementPoints = BuiltInRegistries.ITEM.wrapAsHolder(input.getItem())
                 .getData(ModRegistries.ESSENTIA_ITEMS);
-        if (inputEssentia == null || inputEssentia.points().isEmpty()) {
+        if (inputElementPoints == null || inputElementPoints.amounts().isEmpty()) {
             return input;
         }
 
         // TODO play sound effect, louder/many times if input count > 1
-        storedEssentia.merge(inputEssentia, input.getCount());
+        storedElementPoints.merge(inputElementPoints, input.getCount());
         setChanged();
         return ItemStack.EMPTY;
     }
 
-    public Essentia getEssentia() {
-        return storedEssentia;
+    public ElementPoints getEssentia() {
+        return storedElementPoints;
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         CompoundTag essentiaTag = new CompoundTag();
-        storedEssentia.points().forEach((element, amount) -> {
+        storedElementPoints.amounts().forEach((element, amount) -> {
             essentiaTag.putInt(element.getKey().location().toString(), amount);
         });
 
@@ -106,6 +106,6 @@ public class CrucibleBlockEntity extends BlockEntity {
             essentiaMap.put(elementHolder, essentiaTag.getInt(location));
         });
 
-        storedEssentia = new Essentia(essentiaMap);
+        storedElementPoints = new ElementPoints(essentiaMap);
     }
 }

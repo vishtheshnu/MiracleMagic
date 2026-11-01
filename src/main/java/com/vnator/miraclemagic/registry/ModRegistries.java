@@ -13,10 +13,10 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 @EventBusSubscriber(modid = MiracleMagic.MODID)
 public class ModRegistries {
 
-    public static final DataMapType<Item, Essentia> ESSENTIA_ITEMS = DataMapType.builder(
-            Essentia.REGISTRY_KEY_ITEMS.location(), Registries.ITEM, Essentia.CODEC).build();
-    public static final DataMapType<Item, Essentia> ESSENTIA_ENTITIES = DataMapType.builder(
-            Essentia.REGISTRY_KEY_ENTITIES.location(), Registries.ITEM, Essentia.CODEC).build();
+    public static final DataMapType<Item, ElementPoints> ESSENTIA_ITEMS = DataMapType.builder(
+            ElementPoints.REGISTRY_KEY_ITEMS.location(), Registries.ITEM, ElementPoints.CODEC).build();
+    public static final DataMapType<Item, ElementPoints> ESSENTIA_ENTITIES = DataMapType.builder(
+            ElementPoints.REGISTRY_KEY_ENTITIES.location(), Registries.ITEM, ElementPoints.CODEC).build();
 
     @SubscribeEvent
     public static void registryEvent(DataPackRegistryEvent.NewRegistry event) {

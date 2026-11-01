@@ -42,9 +42,7 @@ public class ResearchCommands {
                                 .requires(source -> source.hasPermission(2))
                                 .then(Commands.argument(RESEARCH_NAME_ARG, StringArgumentType.word())
                                         .then(Commands.argument(PLAYER_ARG, EntityArgument.player())
-                                                .executes(ResearchCommands::commandRemoveResearch))))
-                )
-        );
+                                                .executes(ResearchCommands::commandRemoveResearch))))));
     }
 
     public static int commandGetResearch(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

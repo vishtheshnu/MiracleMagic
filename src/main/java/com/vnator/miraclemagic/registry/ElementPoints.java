@@ -20,49 +20,49 @@ import java.util.Map;
 /**
  * Represents the Essentia in something (eg. item or entity)
  * 
- * @param points Number of points of each element something contains (eg. 1 earth, 1 air)
+ * @param amounts Actual holder for element to number of points of that element (eg. earth:2, air:1)
  *
  */
-public record Essentia(Map<Holder<Element>, Integer> points) {
+public record ElementPoints(Map<Holder<Element>, Integer> amounts) {
 
-    public static final ResourceKey<Registry<Essentia>> REGISTRY_KEY_ITEMS = ResourceKey
+    public static final ResourceKey<Registry<ElementPoints>> REGISTRY_KEY_ITEMS = ResourceKey
             .createRegistryKey(ResourceLocation.fromNamespaceAndPath(MiracleMagic.MODID, "essentia_items"));
-    public static final ResourceKey<Registry<Essentia>> REGISTRY_KEY_ENTITIES = ResourceKey
+    public static final ResourceKey<Registry<ElementPoints>> REGISTRY_KEY_ENTITIES = ResourceKey
             .createRegistryKey(ResourceLocation.fromNamespaceAndPath(MiracleMagic.MODID, "essentia_entities"));
 
-    public static final Codec<Essentia> CODEC = Codec
+    public static final Codec<ElementPoints> CODEC = Codec
             .unboundedMap(RegistryFileCodec.create(Element.REGISTRY_KEY, Element.CODEC), Codec.INT)
-            .xmap(Essentia::new, Essentia::points);
+            .xmap(ElementPoints::new, ElementPoints::amounts);
 
-    public Essentia {
-        points = new HashMap<>(points);
+    public ElementPoints {
+        amounts = new HashMap<>(amounts);
     }
 
     /**
-     * Merges the element:points of {@code other} into this instance
+     * Merges the element:amounts of {@code other} into this instance
      * 
      * @param other    Instance of Essentia to merge into this
      * @param multiple How many times the other Essentia's amounts should be added. Used when merging multiple essentia
      *                 together
      */
-    public void merge(Essentia other, int multiple) {
-        other.points.forEach(((element, amount) -> {
-            if (!points.containsKey(element)) {
-                points.put(element, 0);
+    public void merge(ElementPoints other, int multiple) {
+        other.amounts.forEach(((element, amount) -> {
+            if (!amounts.containsKey(element)) {
+                amounts.put(element, 0);
             }
-            points.put(element, points.get(element) + (amount * multiple));
+            amounts.put(element, amounts.get(element) + (amount * multiple));
         }));
     }
 
     /**
-     * Whether this Essentia holds >= points in all the aspects of Essentia other
+     * Whether this Essentia holds >= amounts in all the aspects of Essentia other
      * 
      * @param other The Essentia instance to compare to
      * @return true if this contains at least as much Essentia as {@code other}
      */
-    public boolean hasGreaterThan(Essentia other) {
-        for (Holder<Element> element : other.points.keySet()) {
-            if (points.getOrDefault(element, 0) < other.points.get(element)) {
+    public boolean hasGreaterThan(ElementPoints other) {
+        for (Holder<Element> element : other.amounts.keySet()) {
+            if (amounts.getOrDefault(element, 0) < other.amounts.get(element)) {
                 return false;
             }
         }
@@ -75,12 +75,12 @@ public record Essentia(Map<Holder<Element>, Integer> points) {
      * @param other Essentia instance to subtract from this one
      * @return True if subtraction was successful, false if this contains less essentia than {@code other}
      */
-    public boolean subtract(Essentia other) {
+    public boolean subtract(ElementPoints other) {
         if (!hasGreaterThan(other)) {
             return false;
         }
-        for (Holder<Element> element : other.points.keySet()) {
-            points.put(element, points.get(element) - other.points.get(element));
+        for (Holder<Element> element : other.amounts.keySet()) {
+            amounts.put(element, amounts.get(element) - other.amounts.get(element));
         }
         return true;
     }
@@ -88,17 +88,17 @@ public record Essentia(Map<Holder<Element>, Integer> points) {
     @Override
     public @NotNull String toString() {
         StringBuilder msg = new StringBuilder("Essentia: [");
-        for (Holder<Element> element : points.keySet()) {
-            msg.append("\n").append("\t").append(element.value().name()).append(":").append(points.get(element));
+        for (Holder<Element> element : amounts.keySet()) {
+            msg.append("\n").append("\t").append(element.value().name()).append(":").append(amounts.get(element));
         }
         msg.append("\n]");
         return msg.toString();
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Essentia> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, Essentia>() {
+    public static final StreamCodec<RegistryFriendlyByteBuf, ElementPoints> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, ElementPoints>() {
 
         @Override
-        public Essentia decode(RegistryFriendlyByteBuf buffer) {
+        public ElementPoints decode(RegistryFriendlyByteBuf buffer) {
             Map<Holder<Element>, Integer> essentiaMap = new HashMap<>();
             int entries = buffer.readInt();
             for (int i = 0; i < entries; i++) {
@@ -106,14 +106,14 @@ public record Essentia(Map<Holder<Element>, Integer> points) {
                 essentiaMap.put(elementStack.element, elementStack.amount);
             }
 
-            return new Essentia(essentiaMap);
+            return new ElementPoints(essentiaMap);
         }
 
         @Override
-        public void encode(RegistryFriendlyByteBuf buffer, Essentia value) {
-            int entries = value.points().size();
+        public void encode(RegistryFriendlyByteBuf buffer, ElementPoints value) {
+            int entries = value.amounts().size();
             buffer.writeInt(entries);
-            value.points().forEach((element, amount) -> {
+            value.amounts().forEach((element, amount) -> {
                 ElementStack.STREAM_CODEC.encode(buffer, new ElementStack(element, amount));
             });
         }

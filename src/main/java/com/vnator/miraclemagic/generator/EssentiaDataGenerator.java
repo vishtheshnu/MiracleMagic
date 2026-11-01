@@ -2,7 +2,7 @@ package com.vnator.miraclemagic.generator;
 
 import com.vnator.miraclemagic.MiracleMagic;
 import com.vnator.miraclemagic.registry.Element;
-import com.vnator.miraclemagic.registry.Essentia;
+import com.vnator.miraclemagic.registry.ElementPoints;
 import com.vnator.miraclemagic.registry.ModRegistries;
 
 import net.minecraft.core.Holder;
@@ -45,7 +45,7 @@ public class EssentiaDataGenerator extends DataMapProvider {
                         ResourceLocation.fromNamespaceAndPath(MiracleMagic.MODID, "earth")))
                 .get();
         builder(ModRegistries.ESSENTIA_ITEMS)
-                .add(Items.SAND.builtInRegistryHolder(), new Essentia(Map.of(air, 1, earth, 2)), true);
+                .add(Items.SAND.builtInRegistryHolder(), new ElementPoints(Map.of(air, 1, earth, 2)), true);
     }
 
     @SubscribeEvent
