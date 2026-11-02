@@ -1,5 +1,9 @@
 {
   "itemGroup.miraclemagic": "Example Mod Tab",
   "block.miraclemagic.example_block": "Example Block",
-  "item.miraclemagic.example_item": "Example Item"
+  "item.miraclemagic.example_item": "Example Item",
+  "element.miraclemagic.air": "Air",
+  "element.miraclemagic.water": "Water",
+  "element.miraclemagic.earth": "Earth",
+  "element.miraclemagic.fire": "Fire"
 }

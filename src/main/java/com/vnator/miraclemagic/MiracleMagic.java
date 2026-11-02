@@ -3,6 +3,7 @@ package com.vnator.miraclemagic;
 import com.vnator.miraclemagic.attachment.ModDataAttachments;
 import com.vnator.miraclemagic.block.ModBlocks;
 import com.vnator.miraclemagic.block.entity.ModBlockEntities;
+import com.vnator.miraclemagic.component.ModDataComponents;
 import com.vnator.miraclemagic.item.ModCreativeModeTabs;
 import com.vnator.miraclemagic.item.ModItems;
 import com.vnator.miraclemagic.recipe.ModRecipes;
@@ -30,6 +31,7 @@ public class MiracleMagic {
 
         ModCreativeModeTabs.register(modEventBus);
         ModDataAttachments.register(modEventBus);
+        ModDataComponents.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
         ModRecipes.register(modEventBus);
